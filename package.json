@@ -1,11 +1,13 @@
 {
   "name": "fractional",
   "private": true,
+  "workspaces": ["packages/backend", "packages/frontend"],
   "scripts": {
     "generate": "graphql-codegen --config ./codegen.yml",
-    "start": "docker-compose up --no-start && concurrently -p \"[{name}]\" -c \"grey.bold\" -n \"Docker,Generate,Frontend,Backend\" \"docker-compose up\" \"yarn generate --watch\" \"yarn start:frontend\" \"yarn start:backend\"",
+    "start": "concurrently -p \"[{name}]\" -c \"grey.bold\" -n \"Generate,Frontend,Backend\" \"yarn generate --watch\" \"yarn start:frontend\" \"yarn start:backend\"",
     "start:backend": "yarn --cwd packages/backend start",
     "start:frontend": "yarn --cwd packages/frontend dev",
+    "migrate": "yarn --cwd packages/backend knex migrate:latest",
     "prepare": "husky install"
   },
   "lint-staged": {
